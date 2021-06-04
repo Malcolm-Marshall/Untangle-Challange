@@ -1,0 +1,19 @@
+{
+  "name": "untangle-challange",
+  "version": "1.0.0",
+  "description": "The coding exercise is as follows:",
+  "main": "concordance.js",
+  "scripts": {
+    "test": "node concordance.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Malcolm-Marshall/Untangle-Challange.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Malcolm-Marshall/Untangle-Challange/issues"
+  },
+  "homepage": "https://github.com/Malcolm-Marshall/Untangle-Challange#readme"
+}

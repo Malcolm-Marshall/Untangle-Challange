@@ -1,70 +1,97 @@
+const fs = require('fs');
+
 const concordance = (str) => {
 
-  let strWords = str.toLowerCase();
+  let sentences = [];
+  let index = 0;
+
+  for (let j = 0; j < str.length; j++) {
+    const regex = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g;
+
+    if (str[j] === '.' && str[j + 1] && str[j + 2] === str[j + 2].toUpperCase() && str[j + 2] !== '.') {
+      sentences.push(str.slice(index, j + 1).toLowerCase().replace(regex, ''));
+      index = j + 1;
+    } else if (str[j] === '.' && !str[j + 1]) {
+      sentences.push(str.slice(index, str.length - 1).toLowerCase().replace(regex, ''))
+    }
+  }
 
   const regex = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g;
-  strWords = strWords.replace(regex, '');
-
-  strWords = strWords.split(' ').sort();
+  let strWords = str.toLowerCase().replace(regex, '').split(' ').sort();
 
   let list = {};
 
   for (let i = 0; i < strWords.length; i++) {
-
     if (!list[strWords[i]]) {
-      list[strWords[i]] = [];
+      list[strWords[i]] = [[], []];
       list[strWords[i]][0] = 1;
     } else {
       list[strWords[i]][0]++;
     }
   }
 
-  console.log(list);
+  for (let key in list) {
+    for (let k = 0; k < sentences.length; k++) {
+      if (sentences[k].split(' ').includes(key)) {
+        list[key][1].push(k + 1);
+      }
+    }
+  }
 
+  return list;
 }
 
-concordance('Given an arbitrary text document written in English, write a program that will generate a concordance, i.e. an alphabetical list of all word occurrences, labeled with word frequencies. Bonus: label each word with the sentence numbers in which each occurrence appeared.')
-
-//First split the string and sort with all words lowercase
-//Create an object with keys being the word in the string, and the value being a tuple with cord count, and sentence placement.
 
 
+let input1 = ('Given an arbitrary text document written in English, write a program that will generate a concordance i.e. an alphabetical list of all word occurrences, labeled with word frequencies. Bonus: label each word with the sentence numbers in which each occurrence appeared. Adding more.')
 
-// Given an arbitrary text document written in English, write a program that will generate a concordance, i.e. an alphabetical list of all word occurrences, labeled with word frequencies.
-// Bonus: label each word with the sentence numbers in which each occurrence appeared.
+let input2 = ('Testing with multiple occurrences in different sentences. Testing. Testing. Occurrences in.')
 
-// For example, this is a concordance of the above text:
-// a.       a                              {2:1,1}
-// b.      all                           {1:1}
-// c.       alphabetical       {1:1}
-// d.      an                           {2:1,1}
-// e.      appeared            {1:2}
-// f.        arbitrary              {1:1}
-// g.       bonus                   {1:2}
-// h.      concordance      {1:1}
-// i.        document           {1:1}
-// j.        each                      {1:2}
-// k.       english                 {1:1}
-// l.        frequencies       {1:1}
-// m.    generate             {1:1}
-// n.      given                     {1:1}
-// o.      i.e.                         {1:1}
-// p.      in                            {2:1,2}
-// q.      it                             {1:2}
-// r.        label                      {1:2}
-// s.       labeled                                {1:1}
-// t.        list                          {1:1}
-// u.      numbers              {1:2}
-// v.       occurrences       {1:1}
-// w.     of                            {1:1}
-// x.       program               {1:1}
-// y.       sentence             {1:2}
-// z.       text                        {1:1}
-// aa.   that                        {1:1}
-// bb.  the                         {1:2}
-// cc.    which                    {1:2}
-// dd.  will                         {1:1}
-// ee.  with                       {2:1,2}
-// ff.     word                      {3:1,1,2}
-// gg.   write                     {1:1}
-// hh.  written                 {1:1}
+let input3 = ('Testing with some numbers. 123. 123. 1234.')
+
+let input4 = ('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse aliquet enim ut enim rhoncus, at bibendum magna convallis. Sed ac gravida velit. Donec feugiat metus vel semper fermentum. Pellentesque semper molestie rhoncus. Nunc vehicula aliquam leo. Curabitur lobortis purus enim, non dignissim lacus luctus ac. Quisque auctor vestibulum aliquet. Curabitur venenatis quam lectus, vel fermentum diam ornare vel. Aliquam a eros in nunc bibendum varius sit amet quis velit. In hac habitasse platea dictumst.')
+
+
+let data1 = concordance(input1);
+let data2 = concordance(input2);
+let data3 = concordance(input3);
+let data4 = concordance(input4);
+
+fs.writeFile("input1.txt", JSON.stringify(data1), (err) => {
+  if (err)
+    console.log(err);
+  else {
+    console.log("File written successfully\n");
+  }
+});
+
+fs.writeFile("input2.txt", JSON.stringify(data2), (err) => {
+  if (err)
+    console.log(err);
+  else {
+    console.log("File written successfully\n");
+  }
+});
+
+fs.writeFile("input3.txt", JSON.stringify(data3), (err) => {
+  if (err)
+    console.log(err);
+  else {
+    console.log("File written successfully\n");
+  }
+});
+
+fs.writeFile("input4.txt", JSON.stringify(data4), (err) => {
+  if (err)
+    console.log(err);
+  else {
+    console.log("File written successfully\n");
+  }
+});
+
+
+
+console.log(concordance(input1));
+//console.log(concordance(input2));
+//console.log(concordance(input3));
+//console.log(concordance(input4));
