@@ -1,4 +1,12 @@
-# Untangle-Challange
+# Untangle-Challenge
+
+
+
+### To test, clone onto your local machine and open the respository. In your terminal, run:
+
+````
+npm run test
+````
 
 The coding exercise is as follows:
 
